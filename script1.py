@@ -1,6 +1,7 @@
 #creates volcano map
 import folium
 import pandas
+
 # initialize pandas
 df=pandas.read_csv("Volcanoes-USA.txt")
 #initialize folium
@@ -20,10 +21,13 @@ def color(elev):
 
 #create all markers
 for lat,lon,name,elev in zip(df['LAT'],df['LON'],df['NAME'],df['ELEV']):
-    map.simple_marker(location=[lat,lon],popup=name,marker_color=color(elev))
+    map.add_child(folium.Marker(location=[lat,lon],popup=name,icon=folium.Icon(color=color(elev))))
 
 # add Portland for fun
-map.simple_marker(location=[45.5231,-122.6765],popup='Portland, OR', marker_color='white')
+map.add_child(folium.Marker(location=[45.5231,-122.6765],popup='Portland, OR', icon=folium.Icon(color=color(elev))))
 
 # build the file
-map.create_map(path='pymap.html')
+map.save(outfile='pymap.html')
+
+# all done - confirm!
+print("file saved!")
